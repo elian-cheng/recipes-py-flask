@@ -5,15 +5,25 @@
 
 {% block body %}
 <h1>All recipes</h1>
+<hr>
+<h2>Create New Recipe: </h2>
+<form action='/recipes' method='POST'>
+  Title: <input type='text' name='title' id='title'><br>
+  Recipe: <input type='text' name='description' id='description'><br>
+  <input type='submit' value='Post'>
+</form>
+<hr>
 {% for recipe in recipes %}
 <h2>{{ recipe.title }}</h2>
 <h3>{{ recipe.category }}</h3>
-<p>{{ recipe.description }}</p>
-
-{% if recipe.author %}
+<p>{{ recipe.description }}
+<p>
+  {% if recipe.author %}
 <h3>By {{recipe.author}}</h3>
 {% else %}
 <h3>N/A</h3>
 {% endif %}
+<a href='/recipes/edit/{{ recipe.id }}'>Edit</a>
+<a href='/recipes/delete/{{ recipe.id }}'>Delete</a>
 {% endfor %}
 {% endblock %}

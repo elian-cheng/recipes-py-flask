@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, redirect, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timezone
 from flask_migrate import Migrate
@@ -44,19 +44,42 @@ def helloName(name):
     return f"Hello, {name}!"
 
 
-all_recipes = [
-    {
-        "title": "Recipe 1",
-        "description": "Some ingredients for 1 recipe",
-        "author": "Joey",
-    },
-    {"title": "Recipe 2", "description": "Some ingredients for 2 recipe", "author": ""},
-]
-
-
-@app.route("/recipes/")
+@app.route("/recipes/", methods=["GET", "POST"])
 def recipes():
-    return render_template("recipes.html", recipes=all_recipes)
+    if request.method == "POST":
+        recipe_title = request.form["title"]
+        recipe_description = request.form["description"]
+        new_recipe = Recipe(
+            title=recipe_title, description=recipe_description, author="Joey"
+        )
+        db.session.add(new_recipe)
+        db.session.commit()
+        return redirect("/recipes/")
+    else:
+        all_recipes = Recipe.query.order_by(Recipe.date_posted).all()
+        return render_template("recipes.html", recipes=all_recipes)
+
+
+@app.route("/recipes/delete/<int:id>/")
+def delete(id):
+    recipe = Recipe.query.get_or_404(id)
+    db.session.delete(recipe)
+    db.session.commit()
+    return redirect("/recipes/")
+
+
+@app.route("/recipes/edit/<int:id>/", methods=["GET", "POST"])
+def edit(id):
+    recipe = Recipe.query.get_or_404(id)
+    # copy and past the post query.
+    if request.method == "POST":
+        recipe.title = request.form["title"]
+        recipe.description = request.form["description"]
+        recipe.category = request.form["category"]
+        db.session.commit()
+        return redirect("/recipes/")
+    else:
+        return render_template("edit.html", recipe=recipe)
 
 
 if __name__ == "__main__":
