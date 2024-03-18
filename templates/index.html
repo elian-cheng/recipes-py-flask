@@ -5,5 +5,19 @@
 {% endblock %}
 
 {% block body %}
-<h1>Home page</h1>
+<div>
+  <div class="bg-body-tertiaryp-5 rounded">
+    <div class="col-sm-8 mx-auto">
+      <h1>Welcome to CookBook</h1>
+      <p>Discover the joy of cooking, one recipe at a time. Whether you're a seasoned chef or just starting your
+        culinary journey, you've found your online haven for all things delicious.</p>
+      <p>Start your culinary exploration now, and let the Cookbook Craze community inspire your next gastronomic
+        masterpiece. Welcome to a world where every meal is a masterpiece waiting to be created.</p>
+      <h4 class="mb-3">We have {{ num_recipes }} recipes</h4>
+      <p>
+        <a class="btn btn-primary" href="/recipes/" role="button">Go to recipes &raquo;</a>
+      </p>
+    </div>
+  </div>
+</div>
 {% endblock %}

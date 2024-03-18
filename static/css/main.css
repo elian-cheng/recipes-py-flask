@@ -1,4 +1,5 @@
 body {
-  font-family: Helvetica;
-  color: blue;
+  background-image: url("/static/food-bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }

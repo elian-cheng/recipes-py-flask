@@ -5,25 +5,22 @@
 
 {% block body %}
 <h1>All recipes</h1>
-<hr>
-<h2>Create New Recipe: </h2>
-<form action='/recipes' method='POST'>
-  Title: <input type='text' name='title' id='title'><br>
-  Recipe: <input type='text' name='description' id='description'><br>
-  <input type='submit' value='Post'>
-</form>
+<a class="btn btn-success float-right" href="/recipes/new/">New recipe</a>
 <hr>
 {% for recipe in recipes %}
-<h2>{{ recipe.title }}</h2>
-<h3>{{ recipe.category }}</h3>
-<p>{{ recipe.description }}
-<p>
-  {% if recipe.author %}
-<h3>By {{recipe.author}}</h3>
-{% else %}
-<h3>N/A</h3>
-{% endif %}
-<a href='/recipes/edit/{{ recipe.id }}'>Edit</a>
-<a href='/recipes/delete/{{ recipe.id }}'>Delete</a>
+<div class="mb-4">
+  <h2>{{ recipe.title }}</h2>
+  <h3>{{ recipe.category }}</h3>
+  <p style="white-space: pre-wrap">{{ recipe.description }}</p>
+  <p>
+    {% if recipe.author %}
+    <small>Written by {{ recipe.author }} on {{ recipe.date_posted }}</small>
+    {% else %}
+    <small>Written by unknown on {{ recipe.date_posted }}</small>
+    {% endif %}
+  </p>
+  <a class="btn btn-primary" href='/recipes/edit/{{ recipe.id }}'>Edit</a>
+  <a class="btn btn-danger" href='/recipes/delete/{{ recipe.id }}'>Delete</a>
+</div>
 {% endfor %}
 {% endblock %}

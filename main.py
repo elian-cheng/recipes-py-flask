@@ -28,13 +28,10 @@ class Recipe(db.Model):
 
 
 @app.route("/")
-def hello():
-    return "Hello, world!"
-
-
 @app.route("/home/")
 def home():
-    return render_template("index.html")
+    num_recipes = Recipe.query.count()
+    return render_template("index.html", num_recipes=num_recipes)
 
 
 # http://127.0.0.1:5000/home/Joey
@@ -50,7 +47,7 @@ def recipes():
         recipe_title = request.form["title"]
         recipe_description = request.form["description"]
         new_recipe = Recipe(
-            title=recipe_title, description=recipe_description, author="Joey"
+            title=recipe_title, description=recipe_description, author="Elian"
         )
         db.session.add(new_recipe)
         db.session.commit()
@@ -80,6 +77,21 @@ def edit(id):
         return redirect("/recipes/")
     else:
         return render_template("edit.html", recipe=recipe)
+
+
+@app.route("/recipes/new/", methods=["GET", "POST"])
+def new_recipe():
+    if request.method == "POST":
+        recipe_title = request.form["title"]
+        recipe_description = request.form["description"]
+        new_recipe = Recipe(
+            title=recipe_title, description=recipe_description, author="Elian"
+        )
+        db.session.add(new_recipe)
+        db.session.commit()
+        return redirect("/recipes/")
+    else:
+        return render_template("new_recipe.html")
 
 
 if __name__ == "__main__":
